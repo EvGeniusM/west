@@ -44,8 +44,30 @@ class Trasher extends Dog {
     };
 
     getDescriptions() {
-        return ["Для уток все становится плохо, когда в рядах бандитов появляется Громила.", super.getDescriptions()]
+        return ["Для уток все становится плохо, когда в рядах бандитов появляется Громила.", ...super.getDescriptions()]
     }    
+}
+
+class Gatling extends Creature {
+    constructor(name = "Гатлинг", power = 6) {
+        super(name, power);
+    }
+
+    attack(gameContext, continuation) {
+        const taskQueue = new TaskQueue();
+        for (let i = 0; i < gameContext.oppositePlayer.table.length; i++) {
+            taskQueue.push(onDone => {
+                const card = gameContext.oppositePlayer.table[i];
+                if (card) {
+                    card.takeDamage(2, card, gameContext, onDone);
+                } else {
+                    onDone();
+                }
+            });
+        }
+
+        taskQueue.continueWith(continuation);
+    }
 }
 
 // Отвечает является ли карта уткой.
