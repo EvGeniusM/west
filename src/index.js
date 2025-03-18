@@ -14,7 +14,7 @@ class Creature extends Card {
 }
 
 
-class Duck extends Card {
+class Duck extends Creature {
     constructor(name = "Мирная утка", power = 2) {
         super(name, power);
     }
@@ -28,7 +28,7 @@ class Duck extends Card {
     };
 }
 
-class Dog extends Card {
+class Dog extends Creature {
     constructor(name = "Пес-бандит", power = 3) {
         super(name, power);
     }
@@ -43,7 +43,9 @@ class Trasher extends Dog {
         this.view.signalAbility(() => { continuation(value - 1); })
     };
 
-    
+    getDescriptions() {
+        return ["Для уток все становится плохо, когда в рядах бандитов появляется Громила.", super.getDescriptions()]
+    }    
 }
 
 // Отвечает является ли карта уткой.
