@@ -44,9 +44,47 @@ class Trasher extends Dog {
     };
 
     getDescriptions() {
-        return ["Для уток все становится плохо, когда в рядах бандитов появляется Громила.", super.getDescriptions()]
+        return ["Для уток все становится плохо, когда в рядах бандитов появляется Громила.", ...super.getDescriptions()]
     }    
 }
+
+class Lad extends Dog {
+    constructor() {
+        super("Браток", 2);
+    }
+
+    static getInGameCount() { 
+        return this.inGameCount || 0; 
+    } 
+
+    static setInGameCount(value) { 
+        this.inGameCount = value; 
+    }
+
+    doAfterComingIntoPlay(gameContext, continuation) {
+        Lad.setInGameCount(Lad.getInGameCount() + 1);
+        const {currentPlayer, oppositePlayer, position, updateView} = gameContext;
+        continuation();
+    };
+
+    doBeforeRemoving(continuation) {
+        Lad.setInGameCount(Lad.getInGameCount() - 1); 
+        continuation();
+    }
+
+    static getBonus() { 
+        return (this.getInGameCount() * (this.getInGameCount() + 1) / 2); 
+    }
+
+    modifyDealedDamageToCreature(value, toCard, gameContext, continuation) {
+        continuation(value + Lad.getBonus()); 
+    }
+
+    modifyTakenDamage(value, fromCard, gameContext, continuation) {
+        continuation(value - Lad.getBonus());
+    }
+}
+
 
 // Отвечает является ли карта уткой.
 function isDuck(card) {
@@ -71,17 +109,15 @@ function getCreatureDescription(card) {
     return 'Существо';
 }
 
-// Колода Шерифа, нижнего игрока.
 const seriffStartDeck = [
     new Duck(),
     new Duck(),
     new Duck(),
 ];
-
-// Колода Бандита, верхнего игрока.
 const banditStartDeck = [
-    new Dog(),
-    new Trasher(),
+    new Lad(),
+    new Lad(),
+    new Lad(),
 ];
 
 // Создание игры.
