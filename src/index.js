@@ -93,17 +93,17 @@ function getCreatureDescription(card) {
     return 'Существо';
 }
 
-// Колода Шерифа, нижнего игрока.
 const seriffStartDeck = [
     new Duck(),
     new Duck(),
     new Duck(),
+    new Gatling(),
 ];
 
-// Колода Бандита, верхнего игрока.
 const banditStartDeck = [
-    new Dog(),
     new Trasher(),
+    new Dog(),
+    new Dog(),
 ];
 
 // Создание игры.
