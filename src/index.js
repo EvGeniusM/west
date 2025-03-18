@@ -4,8 +4,8 @@ import TaskQueue from './TaskQueue.js';
 import SpeedRate from './SpeedRate.js';
 
 class Duck extends Card {
-    constructor() {
-        super("Мирная утка", 2);
+    constructor(name = "Мирная утка", power = 2) {
+        super(name, power);
     }
 
     quacks() {
@@ -18,9 +18,21 @@ class Duck extends Card {
 }
 
 class Dog extends Card {
-    constructor() {
-        super("Пес-бандит", 3);
+    constructor(name = "Пес-бандит", power = 3) {
+        super(name, power);
     }
+}
+
+class Trasher extends Dog {
+    constructor() {
+        super("Громила", 5)
+    }
+
+    modifyTakenDamage (value, fromCard, gameContext, continuation) {
+        this.view.signalAbility(() => { continuation(value - 1); })
+    };
+
+    
 }
 
 // Отвечает является ли карта уткой.
@@ -57,6 +69,7 @@ const seriffStartDeck = [
 // Колода Бандита, верхнего игрока.
 const banditStartDeck = [
     new Dog(),
+    new Trasher(),
 ];
 
 // Создание игры.
