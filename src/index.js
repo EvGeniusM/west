@@ -3,9 +3,19 @@ import Game from './Game.js';
 import TaskQueue from './TaskQueue.js';
 import SpeedRate from './SpeedRate.js';
 
-class Duck extends Card {
-    constructor() {
-        super("Мирная утка", 2);
+class Creature extends Card {
+    constructor(name, power) {
+        super(name, power);
+    }
+
+    getDescriptions() {
+        return [getCreatureDescription(this), ...super.getDescriptions()]
+    }
+}
+
+class Duck extends Creature {
+    constructor(name = "Мирная утка", power = 2) {
+        super(name, power);
     }
 
     quacks() {
@@ -17,18 +27,16 @@ class Duck extends Card {
     };
 }
 
-class Dog extends Card {
-    constructor() {
-        super("Пес-бандит", 3);
+class Dog extends Creature {
+    constructor(name = "Пес-бандит", power = 2) {
+        super(name, power);
     }
 }
 
-// Отвечает является ли карта уткой.
 function isDuck(card) {
     return card instanceof Duck;
 }
 
-// Отвечает является ли карта собакой.
 function isDog(card) {
     return card instanceof Dog;
 }
